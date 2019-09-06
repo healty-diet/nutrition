@@ -1,6 +1,7 @@
 """ Configuration file management. """
 from typing import Optional
 import json
+import logging
 import os
 
 
@@ -19,21 +20,32 @@ class Configuration:
         return ".nutrition_config"
 
     def __init__(self, path: Optional[str]):
+        """
+        Configuration class constructior.
+
+        Available parameters:
+        - application_folder
+            Required. Path to the folder with the application data.
+        - log_level
+            Optional. Sets the log level to the one of the following: ['critical', 'error', 'warning', 'info', 'debug', 'none']
+            Default value is 'warning'.
+        """
         if path is None:
             path = self._lookup_config_file()
 
         with open(path) as file:
             data = json.load(file)
 
-        self.application_folder = os.path.abspath(data["application_folder"])
+        self._application_folder = os.path.abspath(data["application_folder"])
+        self._log_level = data.get("log_level")
 
-        recipes_folder = os.path.join(self.application_folder, self.RECIPES_FOLDER)
+        recipes_folder = os.path.join(self._application_folder, self.RECIPES_FOLDER)
         if not os.path.exists(recipes_folder):
             os.makedirs(recipes_folder)
 
     def calories_data_file(self):
         """ Returns the path to the calories data file. """
-        return os.path.join(self.application_folder, self.CALORIES_FILE)
+        return os.path.join(self._application_folder, self.CALORIES_FILE)
 
     def calories_data(self):
         """ Loads and returns the calories data. """
@@ -42,4 +54,8 @@ class Configuration:
 
     def recipes_folder(self):
         """ Returns the path to the recipes folder. """
-        return os.path.join(self.application_folder, self.RECIPES_FOLDER)
+        return os.path.join(self._application_folder, self.RECIPES_FOLDER)
+
+    def logging_level(self):
+        """ Returns the logging level. """
+        return self._log_level

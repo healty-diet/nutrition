@@ -134,7 +134,6 @@ class ProductWidget(QWidget):
         )
 
         recipe_element = {
-            "name": product,
             "mass": product_mass,
             "calories": energy_data[0],
             "protein": energy_data[1],
@@ -142,4 +141,4 @@ class ProductWidget(QWidget):
             "carbohydrates": energy_data[3],
         }
 
-        self.recipe_table_widget.add_recipe_element(recipe_element)
+        self.recipe_table_widget.add_recipe_element(product, recipe_element)

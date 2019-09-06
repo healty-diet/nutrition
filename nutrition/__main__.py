@@ -1,7 +1,7 @@
 """ Nutrition app. """
 
 import argparse
-from nutrition.app import main
+from nutrition.app import run_app
 
 
 def run():
@@ -12,7 +12,7 @@ def run():
     parser.add_argument("--config", default=default_config_name, help="path to the config file")
 
     args = parser.parse_args()
-    main(args.config)
+    run_app(args.config)
 
 
 run()

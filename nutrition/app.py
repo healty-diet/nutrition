@@ -1,16 +1,13 @@
 """ Main application. """
 
 from typing import Dict
-import logging
 import sys
 from PySide2.QtWidgets import QApplication, QWidget, QTabWidget
 
 from .configuration import Configuration
 from .recipe import RecipeWidget
 from .recipe_manager import RecipeManager
-
-# TODO make it configurable
-logging.basicConfig(level=logging.DEBUG)
+from .logger import Logger
 
 
 class NutritionApp(QWidget):
@@ -46,9 +43,11 @@ class NutritionApp(QWidget):
         self.show()
 
 
-def main(config_path: str):
+def run_app(config_path: str):
     """ Main application runner. """
     config = Configuration(config_path)
+
+    Logger.init_logger(config.logging_level())
 
     RecipeManager.set_path(config.recipes_folder())
 

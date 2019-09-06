@@ -1,8 +1,8 @@
 """ Module with the Recipe Table Widget. """
 
-from typing import Dict, List, Union, Callable, Any, Optional
+from typing import Dict, List
 from enum import Enum
-from PySide2.QtWidgets import QWidget, QLabel, QHBoxLayout, QTableWidget, QVBoxLayout, QTableWidgetItem
+from PySide2.QtWidgets import QWidget, QTableWidget, QVBoxLayout, QTableWidgetItem
 
 from nutrition.utils import InfoWithLabel
 from .utils import energy_data_str
@@ -45,17 +45,13 @@ class RecipeTableWidget(QWidget):
 
             return names[self.value]
 
-        def converter(self) -> Callable[[str], Any]:
-            """ Returns a function to convert stored element into appropriate format. """
-
-            converters = [str, int, float, float, float, float]
-
-            return converters[self.value]
+        @classmethod
+        def product_data_indices(cls) -> List["RecipeTable.TableColumns"]:
+            """ Returns indices for product data fields. """
+            return [cls(idx) for idx in range(cls.MASS.value, cls.CARBOHYDRATES.value + 1)]
 
     def __init__(self):
         super().__init__()
-
-        recipe_label = QLabel("Рецепт:")
 
         columns = [el.translated_str() for el in self.TableColumns]
         recipe_contents = QTableWidget(0, len(columns))
@@ -71,7 +67,6 @@ class RecipeTableWidget(QWidget):
         # Layout for the recipe block
 
         recipe_layout = QVBoxLayout()
-        recipe_layout.addWidget(recipe_label)
         recipe_layout.addWidget(recipe_contents)
         recipe_layout.addWidget(recipe_total_widget)
         recipe_layout.addWidget(recipe_total_per_unit_widget)
@@ -99,12 +94,17 @@ class RecipeTableWidget(QWidget):
         energy_data_per_unit = energy_data_str(total, total["mass"])
         self.recipe_total_per_unit.set_text(energy_data_per_unit)
 
-    def add_recipe_element(self, element: Dict[str, Union[str, float]]):
+    def add_recipe_element(self, element_name: str, element: Dict[str, float]):
         """ Adds a new row into recipe table with provided ingredient. """
 
         row_count = self.recipe_contents.rowCount()
         self.recipe_contents.insertRow(row_count)
-        for col in self.TableColumns:
+
+        # Set name
+        self.recipe_contents.setItem(row_count, self.TableColumns.PRODUCT.value, _table_item(element_name))
+
+        # Set rest of fields
+        for col in self.TableColumns.product_data_indices():
             col_value = element[str(col)]
             self.recipe_contents.setItem(row_count, col.value, _table_item(col_value))
 
@@ -113,23 +113,25 @@ class RecipeTableWidget(QWidget):
     def update_total(self):
         """ Updates info about total information. """
         total = {"mass": 0, "calories": 0, "protein": 0, "fat": 0, "carbohydrates": 0}
-        for recipe_element in self.get_recipe():
+        for recipe_element in self.get_recipe().values():
             for key in total:
                 total[key] += recipe_element[key]
 
         self.set_recipe_total_info(total)
 
-    def get_recipe(self) -> List[Dict[str, Union[str, float]]]:
+    def get_recipe(self) -> Dict[str, Dict[str, float]]:
         """ Returns recipe as a list of dicts with data. """
-        result = []
+        result = {}
 
         for row_idx in range(self.recipe_contents.rowCount()):
             entry = {}
-            for col in self.TableColumns:
-                converter = col.converter()
-                element = self.recipe_contents.item(row_idx, col.value).text()
-                entry[str(col)] = converter(element)
 
-            result.append(entry)
+            name = self.recipe_contents.item(row_idx, self.TableColumns.PRODUCT.value).text()
+
+            for col in self.TableColumns.product_data_indices():
+                element = self.recipe_contents.item(row_idx, col.value).text()
+                entry[str(col)] = float(element)
+
+            result[name] = entry
 
         return result
