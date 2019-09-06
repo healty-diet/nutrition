@@ -26,7 +26,7 @@ class NutritionApp(QWidget):
         self.left = 50
         self.top = 200
         self.width = 1000
-        self.height = 800
+        self.height = 1000
         self.calories_data = calories_data
 
         # Fields that will be inited during init_ui call

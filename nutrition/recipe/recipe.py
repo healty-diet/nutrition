@@ -2,6 +2,7 @@
 
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 
+from .recipe_name import RecipeNameWidget
 from .serves_amount import ServesAmountWidget
 from .product import ProductWidget
 from .energy_value import EnergyValueWidget
@@ -16,12 +17,15 @@ class RecipeWidget(QWidget):
     def __init__(self, calories_data):
         super().__init__()
 
+        recipe_name_widget = RecipeNameWidget()
         serves_amount_widget = ServesAmountWidget()
         product_widget = ProductWidget(calories_data)
         energy_value_widget = EnergyValueWidget()
         recipe_table_widget = RecipeTableWidget()
         recipe_text_widget = RecipeTextWidget()
-        save_recipe_widget = SaveRecipeWidget()
+        save_recipe_widget = SaveRecipeWidget(
+            recipe_name_widget, recipe_table_widget, recipe_text_widget, serves_amount_widget
+        )
 
         product_widget.set_energy_value_widget(energy_value_widget)
         product_widget.set_recipe_table_widget(recipe_table_widget)
@@ -30,6 +34,7 @@ class RecipeWidget(QWidget):
 
         # Layout for the whole block
         full_layout = QVBoxLayout()
+        full_layout.addWidget(recipe_name_widget)
         full_layout.addWidget(serves_amount_widget)
         full_layout.addWidget(product_widget)
         full_layout.addWidget(energy_value_widget)
