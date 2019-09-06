@@ -35,6 +35,11 @@ class Configuration:
         """ Returns the path to the calories data file. """
         return os.path.join(self.application_folder, self.CALORIES_FILE)
 
+    def calories_data(self):
+        """ Loads and returns the calories data. """
+        with open(self.calories_data_file()) as file:
+            return json.load(file)
+
     def recipes_folder(self):
         """ Returns the path to the recipes folder. """
         return os.path.join(self.application_folder, self.RECIPES_FOLDER)

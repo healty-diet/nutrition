@@ -3,13 +3,11 @@
 from typing import Dict
 import logging
 import sys
-import json
 from PySide2.QtWidgets import QApplication, QWidget, QTabWidget
 
+from .configuration import Configuration
 from .recipe import RecipeWidget
-
-# TODO store in config
-CALORIES_DB_PATH = "../../../calories.json"
+from .recipe_manager import RecipeManager
 
 # TODO make it configurable
 logging.basicConfig(level=logging.DEBUG)
@@ -48,14 +46,12 @@ class NutritionApp(QWidget):
         self.show()
 
 
-def main(calories_path: str):
+def main(config_path: str):
     """ Main application runner. """
-    app = QApplication(sys.argv)
-    with open(calories_path) as file:
-        calories_data = json.load(file)
-    _app = NutritionApp(calories_data)
+    config = Configuration(config_path)
+
+    RecipeManager.set_path(config.recipes_folder())
+
+    app = QApplication()
+    _app = NutritionApp(config.calories_data())
     sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main(CALORIES_DB_PATH)
