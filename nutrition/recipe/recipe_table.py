@@ -2,8 +2,9 @@
 
 from typing import Dict, List, Union, Callable, Any, Optional
 from enum import Enum
-from PySide2.QtWidgets import QWidget, QLabel, QHBoxLayout, QPushButton, QTableWidget, QVBoxLayout, QTableWidgetItem
+from PySide2.QtWidgets import QWidget, QLabel, QHBoxLayout, QTableWidget, QVBoxLayout, QTableWidgetItem
 
+from nutrition.utils import InfoWithLabel
 from .utils import energy_data_str
 
 
@@ -63,47 +64,23 @@ class RecipeTableWidget(QWidget):
         recipe_contents.horizontalHeader().setDefaultSectionSize(50)
         recipe_contents.setColumnWidth(0, 350)
 
-        recipe_total_label = QLabel("Итого:")
-        recipe_total_info_label = QLabel("")
-        recipe_total_info_label.setFixedWidth(300)
+        recipe_total_widget = InfoWithLabel("Итого:", width=300)
 
-        recipe_total_layout = QHBoxLayout()
-        recipe_total_layout.addWidget(recipe_total_label)
-        recipe_total_layout.addWidget(recipe_total_info_label)
-        recipe_total_layout.addStretch()
-
-        recipe_total_widget = QWidget()
-        recipe_total_widget.setLayout(recipe_total_layout)
-
-        recipe_total_per_unit_label = QLabel("Итого (на порцию):")
-        recipe_total_per_unit_info_label = QLabel("")
-        recipe_total_per_unit_info_label.setFixedWidth(300)
-
-        recipe_total_per_unit_layout = QHBoxLayout()
-        recipe_total_per_unit_layout.addWidget(recipe_total_per_unit_label)
-        recipe_total_per_unit_layout.addWidget(recipe_total_per_unit_info_label)
-
-        recipe_total_per_unit_widget = QWidget()
-        recipe_total_per_unit_widget.setLayout(recipe_total_per_unit_layout)
-
-        recipe_complete_button = QPushButton("Сохранить рецепт")
+        recipe_total_per_unit_widget = InfoWithLabel("Итого (на порцию):", width=300)
 
         # Layout for the recipe block
 
         recipe_layout = QVBoxLayout()
         recipe_layout.addWidget(recipe_label)
         recipe_layout.addWidget(recipe_contents)
-        recipe_layout.addWidget(recipe_total_label)
         recipe_layout.addWidget(recipe_total_widget)
         recipe_layout.addWidget(recipe_total_per_unit_widget)
-        recipe_layout.addWidget(recipe_complete_button)
-        recipe_layout.addStretch()
 
         self.setLayout(recipe_layout)
 
         self.recipe_contents = recipe_contents
-        self.recipe_total_info_label = recipe_total_info_label
-        self.recipe_total_per_unit_info_label = recipe_total_per_unit_info_label
+        self.recipe_total = recipe_total_widget
+        self.recipe_total_per_unit = recipe_total_per_unit_widget
         self.serves_amount = 1  # 1 by default
 
     def set_serves_amount(self, serves_amount: int):
@@ -114,13 +91,13 @@ class RecipeTableWidget(QWidget):
         """ Sets the total info about the recipe to the text label. """
 
         energy_data = energy_data_str(total, total["mass"])
-        self.recipe_total_info_label.setText(energy_data)
+        self.recipe_total.set_text(energy_data)
 
         for key in total:
             total[key] /= self.serves_amount
 
         energy_data_per_unit = energy_data_str(total, total["mass"])
-        self.recipe_total_per_unit_info_label.setText(energy_data_per_unit)
+        self.recipe_total_per_unit.set_text(energy_data_per_unit)
 
     def add_recipe_element(self, element: Dict[str, Union[str, float]]):
         """ Adds a new row into recipe table with provided ingredient. """

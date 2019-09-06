@@ -1,24 +1,9 @@
-from PySide2.QtWidgets import QWidget, QLabel, QHBoxLayout
+from nutrition.utils import InfoWithLabel
 
 
-class EnergyValueWidget(QWidget):
+class EnergyValueWidget(InfoWithLabel):
+    """ Widget with energy value of the product. """
+
     def __init__(self):
-        super().__init__()
+        super().__init__("Информация о продукте:", width=300)
 
-        energy_data_label = QLabel("Информация о продукте: ")
-        energy_data_text = QLabel("")
-        energy_data_text.setFixedWidth(300)
-
-        # Layout for energy data
-        energy_layout = QHBoxLayout()
-        energy_layout.addWidget(energy_data_label)
-        energy_layout.addWidget(energy_data_text)
-        energy_layout.addStretch()
-
-        self.setLayout(energy_layout)
-
-        self.energy_data_text = energy_data_text
-
-    def set_text(self, text):
-        """ Sets text for the product info """
-        self.energy_data_text.setText(text)

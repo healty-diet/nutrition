@@ -10,6 +10,8 @@ from .recipe_table import RecipeTableWidget
 
 
 class ProductWidget(QWidget):
+    """ Widget that is capable of addint products to the recipe. """
+
     def __init__(self, calories_data: Dict[str, Union[str, float]]):
         super().__init__()
 

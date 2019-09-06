@@ -6,7 +6,7 @@ import sys
 import json
 from PySide2.QtWidgets import QApplication, QWidget, QTabWidget
 
-from recipe import RecipeWidget
+from .recipe import RecipeWidget
 
 # TODO store in config
 CALORIES_DB_PATH = "../../../calories.json"
@@ -25,8 +25,8 @@ class NutritionApp(QWidget):
         self.title = "Nutrition application"
         self.left = 50
         self.top = 200
-        self.width = 1366
-        self.height = 768
+        self.width = 1000
+        self.height = 800
         self.calories_data = calories_data
 
         # Fields that will be inited during init_ui call
@@ -48,14 +48,14 @@ class NutritionApp(QWidget):
         self.show()
 
 
-def main():
+def main(calories_path: str):
     """ Main application runner. """
     app = QApplication(sys.argv)
-    with open(CALORIES_DB_PATH) as file:
+    with open(calories_path) as file:
         calories_data = json.load(file)
     _app = NutritionApp(calories_data)
     sys.exit(app.exec_())
 
 
 if __name__ == "__main__":
-    main()
+    main(CALORIES_DB_PATH)
