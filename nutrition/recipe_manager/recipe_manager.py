@@ -61,14 +61,15 @@ class RecipeManager:
 
     @staticmethod
     def _is_json(name) -> bool:
-        return os.path.isfile(name) and os.path.splitext(name)[0] == ".json"
+        return os.path.splitext(name)[1] == ".json"
 
     @classmethod
     def _json_files(cls) -> List[str]:
-        return [name for name in os.listdir(cls.path()) if RecipeManager._is_json(name)]
+        return [name for name in os.listdir(cls.path()) if cls._is_json(name)]
 
     @classmethod
     def _get_next_file_name(cls) -> str:
+        print([name for name in os.listdir(cls.path()) if cls._is_json(name)])
         files_count = len(cls._json_files())
 
         return "{}.json".format(files_count)
