@@ -12,6 +12,9 @@ matrix:
 sudo: required
 dist: bionic
 
+env:
+  - QT_QPA_PLATFORM="offscreen"
+
 jobs:
   include:
     - name: lints
