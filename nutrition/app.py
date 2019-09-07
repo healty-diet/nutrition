@@ -6,6 +6,7 @@ from PySide2.QtWidgets import QApplication, QWidget, QTabWidget
 
 from .configuration import Configuration
 from .recipe_builder_widget import RecipeBuilderWidget
+from .recipe_library_widget import RecipeLibraryWidget
 from .recipe import RecipeManager
 from .logger import Logger
 
@@ -22,7 +23,7 @@ class NutritionApp(QWidget):
         self._calories_data = calories_data
 
         # Fields that will be inited during init_ui call
-        self._recipe_widget = None
+        self._tab_widget = None
 
         # Init ui
         self._init_ui()
@@ -35,10 +36,12 @@ class NutritionApp(QWidget):
         self.setWindowTitle(self._title)
         self.setGeometry(*self._ui_geometry())
 
-        self._recipe_builder_widget = RecipeBuilderWidget(self._calories_data)
+        recipe_builder_widget = RecipeBuilderWidget(self._calories_data)
+        recipe_library_widget = RecipeLibraryWidget()
 
         self._tab_widget = QTabWidget(self)
-        self._tab_widget.addTab(self._recipe_builder_widget, "Добавление рецептов")
+        self._tab_widget.addTab(recipe_builder_widget, "Добавление рецептов")
+        self._tab_widget.addTab(recipe_library_widget, "База рецептов")
 
         self.show()
 

@@ -31,6 +31,13 @@ class RecipeManager:
             raise RuntimeError("Path for RecipeManager is not set")
         return cls._path
 
+    def recipe_names(self) -> List[str]:
+        """ Returns the names for available recipes. """
+        if self._path is None:
+            raise RuntimeError("Path for RecipeManager is not set")
+
+        return list(self._lookup.keys())
+
     def save(self, recipe: Recipe):
         """ Saves the recipe. """
         # TODO handle recipe duplicates (by name)
