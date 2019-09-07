@@ -1,5 +1,5 @@
 """ Utils for the recipe module. """
-from nutrition.recipe_manager.energy_value import EnergyValue
+from nutrition.recipe.energy_value import EnergyValue
 
 
 def scale(energy_value: EnergyValue, scale_factor: float):

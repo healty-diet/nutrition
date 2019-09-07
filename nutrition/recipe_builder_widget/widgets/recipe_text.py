@@ -1,6 +1,6 @@
 """ Module with the Recipe Text Widget. """
 
-from PySide2.QtWidgets import QWidget, QLabel, QVBoxLayout, QPlainTextEdit
+from PySide2.QtWidgets import QPlainTextEdit
 
 from nutrition.utils import WidgetWithLabel
 

@@ -4,7 +4,7 @@ from typing import List
 from enum import Enum
 from PySide2.QtWidgets import QTableWidget, QTableWidgetItem
 
-from nutrition.recipe_manager.energy_value import EnergyValue
+from nutrition.recipe.energy_value import EnergyValue
 
 
 def _table_item(value):

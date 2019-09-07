@@ -1,6 +1,6 @@
 """ Energy value data. """
 from nutrition.utils import InfoWithLabel
-from nutrition.recipe_manager.energy_value import EnergyValue
+from nutrition.recipe.energy_value import EnergyValue
 
 from .utils import energy_data_str
 

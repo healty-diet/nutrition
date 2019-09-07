@@ -5,8 +5,8 @@ import sys
 from PySide2.QtWidgets import QApplication, QWidget, QTabWidget
 
 from .configuration import Configuration
-from .recipe import RecipeWidget
-from .recipe_manager import RecipeManager
+from .recipe_builder_widget import RecipeBuilderWidget
+from .recipe import RecipeManager
 from .logger import Logger
 
 
@@ -35,10 +35,10 @@ class NutritionApp(QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.recipe_widget = RecipeWidget(self.calories_data)
+        self.recipe_builder_widget = RecipeBuilderWidget(self.calories_data)
 
         self.tab_widget = QTabWidget(self)
-        self.tab_widget.addTab(self.recipe_widget, "Рецепты")
+        self.tab_widget.addTab(self.recipe_builder_widget, "Добавление рецептов")
 
         self.show()
 
