@@ -28,7 +28,7 @@ class RecipeBuilderWidget(QWidget):
 
         recipe_name_widget = RecipeNameWidget()
         serves_amount_widget = ServesAmountWidget(self._serves_amount_edited)
-        product_widget = IngredientWidget(food_names_list, self._ingredient_entered, self._ingredient_finalized)
+        ingredient_widget = IngredientWidget(food_names_list, self._ingredient_entered, self._ingredient_finalized)
         energy_value_widget = EnergyValueWidget()
         recipe_table_widget = RecipeTableWidget()
         total_energy_value_widget = TotalEnergyValueWidget()
@@ -39,7 +39,7 @@ class RecipeBuilderWidget(QWidget):
         full_layout = QVBoxLayout()
         full_layout.addWidget(recipe_name_widget)
         full_layout.addWidget(serves_amount_widget)
-        full_layout.addWidget(product_widget)
+        full_layout.addWidget(ingredient_widget)
         full_layout.addWidget(energy_value_widget)
         full_layout.addWidget(recipe_table_widget)
         full_layout.addWidget(total_energy_value_widget)
@@ -59,6 +59,8 @@ class RecipeBuilderWidget(QWidget):
         self._energy_value_widget = energy_value_widget
         self._recipe_table_widget = recipe_table_widget
         self._total_energy_value_widget = total_energy_value_widget
+        self._recipe_name_widget = recipe_name_widget
+        self._recipe_text_widget = recipe_text_widget
 
     def _ingredient_entered(self, ingredient_name: str, ingredient_mass: float):
         # Callback that is called when ingredient data is entered.
