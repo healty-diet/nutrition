@@ -1,5 +1,8 @@
 # Nutrition application
 
+**Status:**
+[![Travis Build Status](https://travis-ci.org/healty-diet/nutrition.svg?branch=master)](https://travis-ci.org/healty-diet/nutrition)
+
 ## Overview
 
 This is a native application based on Pyside2/Qt to build your diet plan for a week.
