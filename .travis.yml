@@ -17,10 +17,10 @@ jobs:
         - pylint nutrition --max-line-length=120 --extension-pkg-whitelist=PySide2 --disable=fixme; exit $(($? & 3))
         - mypy nutrition --ignore-missing-imports
     - name: tests
-      before_install:
-        - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-        - sudo apt-get update -qq
-        - sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev
-        - sudo apt-get install qt5-default qttools5-dev-tools
       install: pip install -r requirements.txt
+      # Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
+      before_script:
+        - "export DISPLAY=:99.0"
+        - "sh -e /etc/init.d/xvfb start"
+        - sleep 3 # give xvfb some time to start
       script: python -m unittest
