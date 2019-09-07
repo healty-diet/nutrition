@@ -6,10 +6,8 @@ python:
 matrix:
   fast_finish: true
 
-sudo: required
+sudo: false
 dist: bionic
-services:
-  - xvfb
 
 jobs:
   include:
@@ -20,7 +18,4 @@ jobs:
         - mypy nutrition --ignore-missing-imports
     - name: tests
       install: pip install -r requirements.txt
-      # Start virtual X server, from https://docs.travis-ci.com/user/gui-and-headless-browsers/
-      before_script:
-        - "export DISPLAY=:99.0"
-      script: python -m unittest
+      script: xvfb-run --server-args="-screen 0 1024x768x24" python -m unittest
