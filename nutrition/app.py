@@ -35,7 +35,7 @@ class NutritionApp(QWidget):
         self.setWindowTitle(self._title)
         self.setGeometry(*self._ui_geometry())
 
-        self._recipe_builder_widget = RecipeBuilderWidget(self.calories_data)
+        self._recipe_builder_widget = RecipeBuilderWidget(self._calories_data)
 
         self._tab_widget = QTabWidget(self)
         self._tab_widget.addTab(self._recipe_builder_widget, "Добавление рецептов")
