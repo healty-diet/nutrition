@@ -74,7 +74,6 @@ class Callback(unittest.TestCase):
 
 def empty_callback(_data):
     """ Sample empty callback. """
-    pass
 
 
 def random_string(size=5):

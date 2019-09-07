@@ -3,7 +3,7 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 
 from nutrition.logger import Logger
-from nutrition.recipe.types import Ingredient, IngredientName, IngredientAmount, MeasureName
+from nutrition.recipe.types import ingredient as build_ingredient
 from nutrition.recipe import RecipeManager
 
 from .widgets.recipe_name import RecipeNameWidget
@@ -80,9 +80,7 @@ class RecipeBuilderWidget(QWidget):
         Logger.get_logger().debug("Adding ingredient to the recipe: %s", ingredient_name)
 
         # Create an ingredient.
-        ingredient = Ingredient(
-            {IngredientName(ingredient_name): IngredientAmount({MeasureName("гр."): ingredient_mass})}
-        )
+        ingredient = build_ingredient(ingredient_name, "гр.", ingredient_mass)
 
         # Add the ingredient to the recipe table.
         self._recipe_table_widget.add_ingredient(ingredient_name, ingredient_data, ingredient_mass)

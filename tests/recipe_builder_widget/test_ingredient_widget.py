@@ -19,7 +19,6 @@ class TestIngredientWidget(UsesQApplication):
 
     def test_ingredient_layout(self):
         """ Tests the widget layout. """
-        sample_callback = Callback()
         widget = IngredientWidget(self.PRODUCT_NAMES, empty_callback, empty_callback)
 
         self.assertTrue(hasattr(widget, "_ingredient_line_edit"))
