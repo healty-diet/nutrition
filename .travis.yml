@@ -12,9 +12,6 @@ matrix:
 sudo: required
 dist: bionic
 
-services:
-  - xvfb
-
 jobs:
   include:
     - name: lints

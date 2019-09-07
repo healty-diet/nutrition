@@ -23,7 +23,7 @@ class UsesQApplication(unittest.TestCase):
         # Simple way of making instance a singleton
         super(UsesQApplication, self).setUp()
         if UsesQApplication._INSTANCE is None:
-            UsesQApplication._INSTANCE = QApplication([])
+            UsesQApplication._INSTANCE = QApplication(["-no-gui"])
 
         self.app = UsesQApplication._INSTANCE
 
