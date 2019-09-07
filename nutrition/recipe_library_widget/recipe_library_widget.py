@@ -3,6 +3,7 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 
 from nutrition.recipe import RecipeManager
+from nutrition.logger import Logger
 
 from .widgets.recipe_lookup import RecipeLookupWidget
 from .widgets.recipe_content import RecipeContentWidget
@@ -35,6 +36,8 @@ class RecipeLibraryWidget(QWidget):
         if recipe_name not in self._recipe_names:
             # Incorrect recipe name, do nothing.
             return
+
+        Logger.get_logger().debug("Succesfull lookup for a recipe %s", recipe_name)
 
         recipe = RecipeManager().load(recipe_name)
         self._recipe_content_widget.set_recipe(recipe)
