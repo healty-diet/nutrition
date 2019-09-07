@@ -1,7 +1,6 @@
 """ Configuration file management. """
 from typing import Optional
 import json
-import logging
 import os
 
 
@@ -27,7 +26,8 @@ class Configuration:
         - application_folder
             Required. Path to the folder with the application data.
         - log_level
-            Optional. Sets the log level to the one of the following: ['critical', 'error', 'warning', 'info', 'debug', 'none']
+            Optional. Sets the log level to the one of the following:
+            ['critical', 'error', 'warning', 'info', 'debug', 'none']
             Default value is 'warning'.
         """
         if path is None:

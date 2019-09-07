@@ -9,19 +9,19 @@ from .energy_value import EnergyValue
 class Recipe:
     """ Class with the internal representation of the recipe. """
 
-    def __init__(
-        self,
-        name: RecipeName,
-        serves_amount: int,
-        ingredients: List[Ingredient],
-        text: str,
-        energy_value_per_serving: EnergyValue,
-    ):
+    def __init__(self, name: RecipeName):
         self.name = name
-        self.serves_amount = serves_amount
+        self.serves_amount = 1
+        self.ingredients: List[Ingredient] = []
+        self.text = ""
+        self.energy_value_per_serving = EnergyValue()
+
+    def set_data(self, serves: int, ingredients: List[Ingredient], text: str, enery_value: EnergyValue):
+        """ Sets the recipe data. """
+        self.serves_amount = serves
         self.ingredients = ingredients
         self.text = text
-        self.energy_value_per_serving = energy_value_per_serving
+        self.energy_value_per_serving = enery_value
 
     def as_json(self) -> str:
         """ Represents the recipe as json. """
@@ -40,10 +40,13 @@ class Recipe:
         """ Loads the recipe from json. """
         recipe_dict = json.loads(json_data)
 
-        return Recipe(
-            name=recipe_dict["name"],
-            serves_amount=recipe_dict["serves_amount"],
-            ingredients=recipe_dict["ingredients"],
-            text=recipe_dict["text"],
-            energy_value_per_serving=EnergyValue.from_dict(recipe_dict["energy_value_per_serving"]),
+        recipe = cls(recipe_dict["name"])
+
+        recipe.set_data(
+            recipe_dict["serves_amount"],
+            recipe_dict["ingredients"],
+            recipe_dict["text"],
+            EnergyValue.from_dict(recipe_dict["energy_value_per_serving"]),
         )
+
+        return recipe

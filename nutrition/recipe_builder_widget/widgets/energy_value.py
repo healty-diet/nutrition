@@ -16,4 +16,3 @@ class EnergyValueWidget(InfoWithLabel):
         energy_data = energy_data_str(energy_value, ingredient_mass, needs_scaling=True)
 
         self.set_text(energy_data)
-

@@ -24,34 +24,41 @@ class RecipeBuilderWidget(QWidget):
     def __init__(self, calories_data):
         super().__init__()
 
-        self._calories_data = calories_data
+        food_names_list = list(calories_data.keys())
 
-        food_names_list = list(self._calories_data.keys())
+        recipe_name_widget = RecipeNameWidget()
+        serves_amount_widget = ServesAmountWidget(self._serves_amount_edited)
+        product_widget = IngredientWidget(food_names_list, self._ingredient_entered, self._ingredient_finalized)
+        energy_value_widget = EnergyValueWidget()
+        recipe_table_widget = RecipeTableWidget()
+        total_energy_value_widget = TotalEnergyValueWidget()
+        recipe_text_widget = RecipeTextWidget()
+        save_recipe_widget = SaveRecipeWidget(self._on_save_button_clicked)
+
+        # Layout for the whole block
+        full_layout = QVBoxLayout()
+        full_layout.addWidget(recipe_name_widget)
+        full_layout.addWidget(serves_amount_widget)
+        full_layout.addWidget(product_widget)
+        full_layout.addWidget(energy_value_widget)
+        full_layout.addWidget(recipe_table_widget)
+        full_layout.addWidget(total_energy_value_widget)
+        full_layout.addWidget(recipe_text_widget)
+        full_layout.addWidget(save_recipe_widget)
+
+        self.setLayout(full_layout)
+
+        # Init self data.
+
+        self._calories_data = calories_data
 
         self._serves = 1
         self._recipe_builder = RecipeBuilder()
 
-        self._recipe_name_widget = RecipeNameWidget()
-        self._serves_amount_widget = ServesAmountWidget(self._serves_amount_edited)
-        self._product_widget = IngredientWidget(food_names_list, self._ingredient_entered, self._ingredient_finalized)
-        self._energy_value_widget = EnergyValueWidget()
-        self._recipe_table_widget = RecipeTableWidget()
-        self._total_energy_value_widget = TotalEnergyValueWidget()
-        self._recipe_text_widget = RecipeTextWidget()
-        self._save_recipe_widget = SaveRecipeWidget(self._on_save_button_clicked)
-
-        # Layout for the whole block
-        full_layout = QVBoxLayout()
-        full_layout.addWidget(self._recipe_name_widget)
-        full_layout.addWidget(self._serves_amount_widget)
-        full_layout.addWidget(self._product_widget)
-        full_layout.addWidget(self._energy_value_widget)
-        full_layout.addWidget(self._recipe_table_widget)
-        full_layout.addWidget(self._total_energy_value_widget)
-        full_layout.addWidget(self._recipe_text_widget)
-        full_layout.addWidget(self._save_recipe_widget)
-
-        self.setLayout(full_layout)
+        # TODO use getChild instead of storing directly.
+        self._energy_value_widget = energy_value_widget
+        self._recipe_table_widget = recipe_table_widget
+        self._total_energy_value_widget = total_energy_value_widget
 
     def _ingredient_entered(self, ingredient_name: str, ingredient_mass: float):
         # Callback that is called when ingredient data is entered.

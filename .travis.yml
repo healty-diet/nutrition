@@ -1,0 +1,21 @@
+language: python
+
+python:
+  - "3.7"
+
+matrix:
+  fast_finish: true
+
+sudo: false
+dist: bionic
+
+jobs:
+  include:
+    - name: lints
+      install: pip install -r requirements.txt
+      script: 
+        - pylint nutrition --max-line-length=120 --extension-pkg-whitelist=PySide2 --disable=fixme; exit $(($? & 3))
+        - mypy nutrition --ignore-missing-imports
+    - name: tests
+      install: pip install -r requirements.txt
+      script: python -m unittest

@@ -25,5 +25,5 @@ def energy_data_str(energy_data: EnergyValue, product_mass=100, needs_scaling=Fa
 
     if product_mass:
         return "К {:.1f} Б {:.1f} Ж {:.1f} У {:.1f} [на {} грамм]".format(*data, product_mass)
-    else:
-        return "К {:.1f} Б {:.1f} Ж {:.1f} У {:.1f}".format(*data)
+
+    return "К {:.1f} Б {:.1f} Ж {:.1f} У {:.1f}".format(*data)

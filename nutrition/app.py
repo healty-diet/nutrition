@@ -17,28 +17,28 @@ class NutritionApp(QWidget):
         super().__init__()
 
         # Main app settings
-        self.title = "Nutrition application"
-        self.left = 50
-        self.top = 200
-        self.width = 1000
-        self.height = 1000
-        self.calories_data = calories_data
+        self._title = "Nutrition application"
+        self._geometry = {"left": 50, "top": 200, "width": 1000, "height": 1000}
+        self._calories_data = calories_data
 
         # Fields that will be inited during init_ui call
-        self.recipe_widget = None
+        self._recipe_widget = None
 
         # Init ui
-        self.init_ui()
+        self._init_ui()
 
-    def init_ui(self):
+    def _ui_geometry(self):
+        return [self._geometry["left"], self._geometry["top"], self._geometry["width"], self._geometry["height"]]
+
+    def _init_ui(self):
         """ Method to init UI. """
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        self.setWindowTitle(self._title)
+        self.setGeometry(*self._ui_geometry())
 
-        self.recipe_builder_widget = RecipeBuilderWidget(self.calories_data)
+        self._recipe_builder_widget = RecipeBuilderWidget(self.calories_data)
 
-        self.tab_widget = QTabWidget(self)
-        self.tab_widget.addTab(self.recipe_builder_widget, "Добавление рецептов")
+        self._tab_widget = QTabWidget(self)
+        self._tab_widget.addTab(self._recipe_builder_widget, "Добавление рецептов")
 
         self.show()
 

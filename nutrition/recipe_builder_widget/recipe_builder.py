@@ -63,7 +63,8 @@ class RecipeBuilder:
             raise RuntimeError("Attempt to build incomplete recipe")
 
         ingredients_list = list(map(lambda el: el[0], self._ingredients))
-        recipe = Recipe(self._recipe_name, self._serves, ingredients_list, self._text, self._energy_value_per_serving)
+        recipe = Recipe(self._recipe_name)
+        recipe.set_data(self._serves, ingredients_list, self._text, self._energy_value_per_serving)
 
         return recipe
 
