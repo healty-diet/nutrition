@@ -3,9 +3,9 @@
 from typing import Optional, List
 from functools import wraps
 
-from nutrition.recipe_manager.types import RecipeName, Ingredient
-from nutrition.recipe_manager import Recipe
-from nutrition.recipe_manager.energy_value import EnergyValue
+from nutrition.recipe.types import RecipeName, Ingredient
+from nutrition.recipe import Recipe
+from nutrition.recipe.energy_value import EnergyValue
 
 
 def _affects_recipe(method):

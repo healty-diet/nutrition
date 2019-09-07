@@ -3,8 +3,8 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 
 from nutrition.logger import Logger
-from nutrition.recipe_manager.types import Ingredient, IngredientName, IngredientAmount, MeasureName
-from nutrition.recipe_manager import RecipeManager
+from nutrition.recipe.types import Ingredient, IngredientName, IngredientAmount, MeasureName
+from nutrition.recipe import RecipeManager
 
 from .widgets.recipe_name import RecipeNameWidget
 from .widgets.serves_amount import ServesAmountWidget
