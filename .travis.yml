@@ -27,6 +27,6 @@ jobs:
     - name: tests
       install: pip install -r requirements.txt
       before_script:
-        - (herbstluftwm )& fi
+        - (herbstluftwm )&
         - sleep 1
       script: python -m unittest
