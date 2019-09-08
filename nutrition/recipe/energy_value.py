@@ -14,7 +14,7 @@ class EnergyValue(dict):
     @property
     def calories(self):
         """ Amount of the calories. """
-        return self["calories"]
+        return float(self["calories"])
 
     @calories.setter
     def calories(self, value):
@@ -23,7 +23,7 @@ class EnergyValue(dict):
     @property
     def protein(self):
         """ Amount of the protein. """
-        return self["protein"]
+        return float(self["protein"])
 
     @protein.setter
     def protein(self, value):
@@ -32,7 +32,7 @@ class EnergyValue(dict):
     @property
     def fat(self):
         """ Amount of the fat. """
-        return self["fat"]
+        return float(self["fat"])
 
     @fat.setter
     def fat(self, value):
@@ -41,7 +41,7 @@ class EnergyValue(dict):
     @property
     def carbohydrates(self):
         """ Amount of the carbohydrates. """
-        return self["carbohydrates"]
+        return float(self["carbohydrates"])
 
     @carbohydrates.setter
     def carbohydrates(self, value):

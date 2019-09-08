@@ -24,7 +24,7 @@ class RecipeLibraryWidget(QWidget):
         full_layout = QVBoxLayout()
         full_layout.addWidget(recipe_lookup_widget)
         full_layout.addWidget(recipe_content_widget)
-        full_layout.addStretch()
+        # full_layout.addStretch()
 
         self.setLayout(full_layout)
 

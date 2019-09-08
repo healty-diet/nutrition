@@ -13,6 +13,8 @@ class RecipeLookupWidget(WidgetWithLabel):
         widget = QLineEdit("")
         completer = QCompleter(lookup_names)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
+        completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        completer.setMaxVisibleItems(50)
         widget.setCompleter(completer)
 
         super().__init__("Название рецепта:", widget)
