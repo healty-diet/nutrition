@@ -16,7 +16,7 @@ Key features:
 - Creating a shopping list based on menu
 - Export of menu and shopping list into `.xls` format.
 
-![screenshot][screenshot.png]
+![screenshot](screenshot.png)
 
 ## Language support
 
