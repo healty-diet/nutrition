@@ -1,6 +1,6 @@
 """ Module with the Plan Widget. """
 
-from typing import List, Any, Optional
+from typing import List, Any, Optional, Tuple, Dict
 from PySide2.QtWidgets import QTableWidget, QTableWidgetItem, QHeaderView
 from PySide2.QtCore import Slot
 
@@ -98,3 +98,37 @@ class PlanWidget(QTableWidget):
         self._recalculate_day(day)
 
         return replaced
+
+    def get_plan(self) -> Dict[str, List[Tuple[str, str, str]]]:
+        """ Returns the created plan. """
+        result: Dict[str, List[Tuple[str, str, str]]] = dict()
+
+        for day in self._week_days:
+            result[day] = []
+
+            meal_column = self._day_column(day)
+            calories_column = self._calories_column(day)
+            for row in range(self._meals_amount):
+                number = str(row + 1)
+                meal_item = self.item(row, meal_column)
+                if meal_item:
+                    meal_name = meal_item.text()
+                else:
+                    meal_name = ""
+                calories_item = self.item(row, calories_column)
+                if calories_item:
+                    calories = calories_item.text()
+                else:
+                    calories = ""
+
+                result[day].append((number, meal_name, calories))
+
+            overall_calories_item = self.item(self._meals_amount, calories_column)
+            if overall_calories_item:
+                overall_calories = overall_calories_item.text()
+            else:
+                overall_calories = ""
+
+            result[day].append(("#", "", overall_calories))
+
+        return result

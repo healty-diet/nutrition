@@ -1,6 +1,8 @@
 """ Recipe planner widget. """
 
-from PySide2.QtWidgets import QWidget, QVBoxLayout
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QFileDialog
+
+import xlwt
 
 from nutrition.logger import Logger
 from nutrition.recipe import RecipeManager
@@ -9,6 +11,7 @@ from .widgets.pool_item import PoolItemWidget
 from .widgets.pool import PoolWidget
 from .widgets.plan import PlanWidget
 from .widgets.shopping_list import ShoppingListWidget
+from .widgets.save_plan import SavePlanWidget
 
 
 class RecipePlannerWidget(QWidget):
@@ -17,6 +20,7 @@ class RecipePlannerWidget(QWidget):
     def __init__(self) -> None:
         super().__init__()
 
+        # TODO make it configurable.
         week_days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
         meals_amount = 5
 
@@ -26,6 +30,7 @@ class RecipePlannerWidget(QWidget):
         pool_widget = PoolWidget(week_days, meals_amount, self._on_meal_planned)
         plan_widget = PlanWidget(week_days, meals_amount)
         shopping_list_widget = ShoppingListWidget()
+        save_plan_widget = SavePlanWidget(self._on_save)
 
         # Layout for the whole block.
         full_layout = QVBoxLayout()
@@ -33,11 +38,13 @@ class RecipePlannerWidget(QWidget):
         full_layout.addWidget(pool_widget)
         full_layout.addWidget(plan_widget)
         full_layout.addWidget(shopping_list_widget)
+        full_layout.addWidget(save_plan_widget)
         full_layout.addStretch()
 
         self.setLayout(full_layout)
 
         # Init self data.
+        self._week_days = week_days
         self._recipe_names = set(recipe_names)
         self._pool_widget = pool_widget
         self._plan_widget = plan_widget
@@ -70,3 +77,46 @@ class RecipePlannerWidget(QWidget):
             for ingredient in old_recipe.ingredients_per_serving():
                 name = list(ingredient.keys())[0]
                 self._shopping_list_widget.remove_ingredient(name, ingredient[name])
+
+    def _on_save(self) -> None:
+        file_path = QFileDialog.getSaveFileName(self, "Сохранить как", filter="Файлы Excel (*.xls)")[0]
+        if not file_path.endswith(".xls"):
+            file_path += ".xls"
+
+        # TODO move xls creation into separate module.
+
+        workbook = xlwt.Workbook()
+
+        self._build_plan_sheet(workbook)
+        self._build_shopping_list_sheet(workbook)
+
+        workbook.save(file_path)
+
+    def _build_plan_sheet(self, workbook: xlwt.Workbook) -> None:
+        plan = self._plan_widget.get_plan()
+
+        plan_sheet = workbook.add_sheet("Меню")
+        plan_sheet.col(1).width = 10000
+        first_row = 0
+        for week_day in self._week_days:
+            first_column = 0
+            plan_sheet.write(first_row, first_column, week_day)
+
+            for meal_idx, (header, name, calories) in enumerate(plan[week_day]):
+                meal_idx += 1  # Because it was taken
+                plan_sheet.write(first_row + meal_idx, first_column, header)
+                plan_sheet.write(first_row + meal_idx, first_column + 1, name)
+                plan_sheet.write(first_row + meal_idx, first_column + 2, calories)
+
+            first_row += len(plan[week_day]) + 2
+
+    def _build_shopping_list_sheet(self, workbook: xlwt.Workbook) -> None:
+        shopping_list = self._shopping_list_widget.get_shopping_list()
+
+        shopping_list_sheet = workbook.add_sheet("Список покупок")
+        for idx, ingredient in enumerate(shopping_list):
+            shopping_list_sheet.write(idx, 0, ingredient)
+            measure_offset = 1
+            for measure_idx, measure_name in enumerate(shopping_list[ingredient]):
+                amount_str = "{:.2f} ({})".format(shopping_list[ingredient][measure_name], measure_name)
+                shopping_list_sheet.write(idx, measure_offset + measure_idx, amount_str)

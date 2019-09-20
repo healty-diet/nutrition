@@ -12,6 +12,8 @@ lazy-object-proxy==1.4.2
 mccabe==0.6.1
 mypy==0.720
 mypy-extensions==0.4.1
+-e git+git@github.com:healty-diet/nutrition.git@4019427bbccc6232cb834730324287cf16018a5a#egg=nutrition
+pkg-resources==0.0.0
 pylint==2.3.1
 PySide2==5.13.1
 requests==2.22.0
@@ -23,3 +25,4 @@ typed-ast==1.4.0
 typing-extensions==3.7.4
 urllib3==1.25.3
 wrapt==1.11.2
+xlwt==1.3.0

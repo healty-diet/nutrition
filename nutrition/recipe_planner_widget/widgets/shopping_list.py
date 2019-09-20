@@ -21,7 +21,7 @@ class ShoppingListWidget(QPlainTextEdit):
 
     @staticmethod
     def _amount_to_str(measure: str, amount: float) -> str:
-        return f"{amount} ({measure})"
+        return "{:.2f} ({})".format(amount, measure)
 
     def _update_shopping_list(self) -> None:
         # Update the shopping list text.
@@ -74,10 +74,14 @@ class ShoppingListWidget(QPlainTextEdit):
 
         # Check if we have 0 of ingredient.
         if math.isclose(self._ingredients[ingredient][measure], 0.0):
-            del self._ingredients[measure]
+            del self._ingredients[ingredient][measure]
 
         # Check if ingredient has no measures.
         if not self._ingredients[ingredient]:
             del self._ingredients[ingredient]
 
         self._update_shopping_list()
+
+    def get_shopping_list(self) -> Dict[IngredientName, IngredientAmount]:
+        """ Returns the list of ingredients. """
+        return self._ingredients
