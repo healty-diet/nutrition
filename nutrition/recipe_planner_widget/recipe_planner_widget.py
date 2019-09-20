@@ -7,6 +7,7 @@ from nutrition.recipe import RecipeManager
 
 from .widgets.pool_item import PoolItemWidget
 from .widgets.pool import PoolWidget
+from .widgets.plan import PlanWidget
 
 
 class RecipePlannerWidget(QWidget):
@@ -22,11 +23,13 @@ class RecipePlannerWidget(QWidget):
 
         pool_item_widget = PoolItemWidget(recipe_names, self._on_pool_item_added)
         pool_widget = PoolWidget(week_days, meals_amount, self._on_meal_planned)
+        plan_widget = PlanWidget(week_days, meals_amount)
 
         # Layout for the whole block.
         full_layout = QVBoxLayout()
         full_layout.addWidget(pool_item_widget)
         full_layout.addWidget(pool_widget)
+        full_layout.addWidget(plan_widget)
         full_layout.addStretch()
 
         self.setLayout(full_layout)
@@ -34,6 +37,7 @@ class RecipePlannerWidget(QWidget):
         # Init self data.
         self._recipe_names = set(recipe_names)
         self._pool_widget = pool_widget
+        self._plan_widget = plan_widget
 
     def _on_pool_item_added(self, recipe_name: str, serves_amount: int) -> None:
         if recipe_name not in self._recipe_names:
@@ -42,10 +46,16 @@ class RecipePlannerWidget(QWidget):
 
         Logger.get_logger().debug("Successfull lookup for a recipe %s", recipe_name)
 
-        # _recipe = RecipeManager().load(recipe_name)
         self._pool_widget.add_meal(recipe_name, serves_amount)
 
         # TODO
 
     def _on_meal_planned(self, recipe_name: str, week_day: str, meal_idx: int) -> None:
-        raise NotImplementedError
+        recipe = RecipeManager().load(recipe_name)
+
+        calories = recipe.energy_value_per_serving.calories
+
+        replaced_name = self._plan_widget.add_meal(recipe_name, week_day, meal_idx, int(calories))
+
+        if replaced_name is not None:
+            self._pool_widget.add_meal(replaced_name, 1)

@@ -41,7 +41,7 @@ class NutritionApp(QWidget):
         recipe_library_widget = RecipeLibraryWidget()
         recipe_planner_widget = RecipePlannerWidget()
 
-        self._tab_widget = QTabWidget()
+        self._tab_widget = QTabWidget(self)
         assert self._tab_widget is not None
         self._tab_widget.addTab(recipe_builder_widget, "Добавление рецептов")
         self._tab_widget.addTab(recipe_library_widget, "База рецептов")
