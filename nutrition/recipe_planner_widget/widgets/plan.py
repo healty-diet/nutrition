@@ -33,6 +33,7 @@ class PlanWidget(QTableWidget):
         self.setVerticalHeaderLabels([str(i) for i in range(1, meals_amount + 1)] + ["#"])
         self.setFixedWidth(915)
         self.setWordWrap(True)
+
         horizontal_header = self.horizontalHeader()
         horizontal_header.setDefaultSectionSize(20)
         for day in week_days:
