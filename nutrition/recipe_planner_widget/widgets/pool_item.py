@@ -1,8 +1,12 @@
 """ Pool item widget. """
 
+from typing import Callable, List
+
 from PySide2.QtWidgets import QWidget, QLabel, QLineEdit, QHBoxLayout, QPushButton, QCompleter
 from PySide2.QtCore import Qt, Slot
 from PySide2.QtGui import QIntValidator
+
+CallbackType = Callable[[str, int], None]
 
 
 class PoolItemWidget(QWidget):
@@ -10,7 +14,7 @@ class PoolItemWidget(QWidget):
 
     DEFAULT_SERVES_AMOUNT = 4
 
-    def __init__(self, lookup_names, on_item_added):
+    def __init__(self, lookup_names: List, on_item_added: CallbackType) -> None:
         super().__init__()
 
         recipe_search_label = QLabel("Блюдо:")
@@ -51,13 +55,13 @@ class PoolItemWidget(QWidget):
         # Connect slots
         self._connect_slots()
 
-    def _connect_slots(self):
+    def _connect_slots(self) -> None:
         # Lint is disabled because pylint doesn't see .connect method
         # pylint: disable=no-member
         self._add_push_button.clicked.connect(self._item_completed)
 
     @Slot()
-    def _item_completed(self, _checked):
+    def _item_completed(self, _checked: bool) -> None:
         """ Slot for the recipe search. """
         recipe_name = self._recipe_search_line_edit.text()
         serves_amount = int(self._serves_amount_line_edit.text())

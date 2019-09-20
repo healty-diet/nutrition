@@ -1,9 +1,11 @@
 """ Recipe module. """
 
+from typing import Dict, Any
+
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 
 from nutrition.logger import Logger
-from nutrition.recipe.types import ingredient as build_ingredient
+from nutrition.recipe.types import RecipeName, ingredient as build_ingredient
 from nutrition.recipe import RecipeManager
 
 from .widgets.recipe_name import RecipeNameWidget
@@ -21,7 +23,7 @@ from .recipe_builder import RecipeBuilder
 class RecipeBuilderWidget(QWidget):
     """ Recipe widget. """
 
-    def __init__(self, calories_data):
+    def __init__(self, calories_data: Dict[str, Any]) -> None:
         super().__init__()
 
         food_names_list = list(calories_data.keys())
@@ -62,7 +64,7 @@ class RecipeBuilderWidget(QWidget):
         self._recipe_name_widget = recipe_name_widget
         self._recipe_text_widget = recipe_text_widget
 
-    def _ingredient_entered(self, ingredient_name: str, ingredient_mass: float):
+    def _ingredient_entered(self, ingredient_name: str, ingredient_mass: float) -> None:
         # Callback that is called when ingredient data is entered.
 
         ingredient_data = self._calories_data.get(ingredient_name)
@@ -73,9 +75,9 @@ class RecipeBuilderWidget(QWidget):
         Logger.get_logger().debug("Completed ingredient lookup with mass: %s / %s", ingredient_name, ingredient_mass)
 
         # Update product energy value.
-        self._energy_value_widget.set_energy_value(ingredient_data, ingredient_mass)
+        self._energy_value_widget.set_energy_value(ingredient_data, int(ingredient_mass))
 
-    def _ingredient_finalized(self, ingredient_name: str, ingredient_mass: float):
+    def _ingredient_finalized(self, ingredient_name: str, ingredient_mass: float) -> None:
         # Callback that is called when ingredient data is finalized (ready to be added to the recipe).
 
         ingredient_data = self._calories_data.get(ingredient_name)
@@ -92,7 +94,7 @@ class RecipeBuilderWidget(QWidget):
         ingredient = build_ingredient(ingredient_name, "гр.", ingredient_mass)
 
         # Add the ingredient to the recipe table.
-        self._recipe_table_widget.add_ingredient(ingredient_name, ingredient_data, ingredient_mass)
+        self._recipe_table_widget.add_ingredient(ingredient_name, ingredient_data, int(ingredient_mass))
 
         # Add the ingredient to the recipe builder.
         self._recipe_builder.add_ingredient(ingredient, ingredient_data)
@@ -100,7 +102,7 @@ class RecipeBuilderWidget(QWidget):
         # Set the total recipe energy value.
         self._total_energy_value_widget.set_total(self._recipe_builder.energy_value())
 
-    def _serves_amount_edited(self, new_amount: int):
+    def _serves_amount_edited(self, new_amount: int) -> None:
         # Callback that is called when serves amount is entered.
 
         self._serves = new_amount
@@ -109,14 +111,14 @@ class RecipeBuilderWidget(QWidget):
         self._recipe_builder.set_serves(self._serves)
         self._total_energy_value_widget.set_total(self._recipe_builder.energy_value())
 
-    def _recipe_element_removed(self, recipe_element):
+    def _recipe_element_removed(self, recipe_element: str) -> None:
         raise NotImplementedError
 
-    def _on_save_button_clicked(self):
+    def _on_save_button_clicked(self) -> None:
         # Callback that is called when recipe is ready and should be saved.
 
         # Update final recipe builder data.
-        self._recipe_builder.set_recipe_name(self._recipe_name_widget.name())
+        self._recipe_builder.set_recipe_name(RecipeName(self._recipe_name_widget.name()))
         self._recipe_builder.set_recipe_text(self._recipe_text_widget.get_text())
 
         # TODO handle recipe duplicates

@@ -12,7 +12,7 @@ from .widgets.recipe_content import RecipeContentWidget
 class RecipeLibraryWidget(QWidget):
     """ Recipe library widget. """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         recipe_names = RecipeManager().recipe_names()
@@ -32,7 +32,7 @@ class RecipeLibraryWidget(QWidget):
         self._recipe_names = set(recipe_names)
         self._recipe_content_widget = recipe_content_widget
 
-    def _on_recipe_name_entered(self, recipe_name: str):
+    def _on_recipe_name_entered(self, recipe_name: str) -> None:
         if recipe_name not in self._recipe_names:
             # Incorrect recipe name, do nothing.
             return

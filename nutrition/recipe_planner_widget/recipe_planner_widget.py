@@ -3,7 +3,7 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout
 
 from nutrition.logger import Logger
-from nutrition.recipe import RecipeManager, Recipe
+from nutrition.recipe import RecipeManager
 
 from .widgets.pool_item import PoolItemWidget
 from .widgets.pool import PoolWidget
@@ -12,7 +12,7 @@ from .widgets.pool import PoolWidget
 class RecipePlannerWidget(QWidget):
     """ Recipe planner widget. """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         week_days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
@@ -35,7 +35,7 @@ class RecipePlannerWidget(QWidget):
         self._recipe_names = set(recipe_names)
         self._pool_widget = pool_widget
 
-    def _on_pool_item_added(self, recipe_name: str, serves_amount: int):
+    def _on_pool_item_added(self, recipe_name: str, serves_amount: int) -> None:
         if recipe_name not in self._recipe_names:
             # Incomplete recipe name, do nothing.
             return
@@ -47,5 +47,5 @@ class RecipePlannerWidget(QWidget):
 
         # TODO
 
-    def _on_meal_planned(self, recipe_name: str, week_day: str, meal_idx: int):
-        pass
+    def _on_meal_planned(self, recipe_name: str, week_day: str, meal_idx: int) -> None:
+        raise NotImplementedError

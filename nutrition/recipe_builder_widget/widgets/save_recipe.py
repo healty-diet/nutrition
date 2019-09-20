@@ -1,7 +1,11 @@
 """ Module with the Recipe Text Widget. """
 
+from typing import Callable
+
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QPushButton
 from PySide2.QtCore import Slot
+
+CallbackType = Callable[[], None]
 
 
 class SaveRecipeWidget(QWidget):
@@ -9,7 +13,7 @@ class SaveRecipeWidget(QWidget):
     Widget that is capable of saving the recipe.
     """
 
-    def __init__(self, on_clicked):
+    def __init__(self, on_clicked: CallbackType) -> None:
         self._on_clicked = on_clicked
 
         super().__init__()
@@ -27,11 +31,11 @@ class SaveRecipeWidget(QWidget):
         self._save_button = save_button
         self._connect_slots()
 
-    def _connect_slots(self):
+    def _connect_slots(self) -> None:
         # Lint is disabled because pylint doesn't see .connect method
         # pylint: disable=no-member
         self._save_button.clicked.connect(self._save_button_clicked)
 
     @Slot()
-    def _save_button_clicked(self, _checked):
+    def _save_button_clicked(self, _checked: bool) -> None:
         self._on_clicked()

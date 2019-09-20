@@ -15,7 +15,7 @@ class RecipeManager:
     _lookup: Dict[str, str] = dict()
 
     @classmethod
-    def set_path(cls, path: str):
+    def set_path(cls, path: str) -> None:
         """ Sets the recipe folder path. """
         if cls._path is not None:
             raise RuntimeError("Path is already set")
@@ -38,7 +38,7 @@ class RecipeManager:
 
         return list(self._lookup.keys())
 
-    def save(self, recipe: Recipe):
+    def save(self, recipe: Recipe) -> None:
         """ Saves the recipe. """
         # TODO handle recipe duplicates (by name)
 
@@ -67,7 +67,7 @@ class RecipeManager:
         raise NotImplementedError
 
     @staticmethod
-    def _is_json(name) -> bool:
+    def _is_json(name: str) -> bool:
         return os.path.splitext(name)[1] == ".json"
 
     @classmethod
@@ -82,13 +82,13 @@ class RecipeManager:
         return "{}.json".format(files_count)
 
     @classmethod
-    def _load(cls, file_name) -> Recipe:
+    def _load(cls, file_name: str) -> Recipe:
         file_path = os.path.join(cls.path(), file_name)
         with open(file_path, "r") as file:
             return Recipe.from_json(file.read())
 
     @classmethod
-    def _build_lookup(cls):
+    def _build_lookup(cls) -> None:
         files = cls._json_files()
 
         for file_name in files:

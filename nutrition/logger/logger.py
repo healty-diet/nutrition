@@ -1,4 +1,5 @@
 """ Logger module. """
+from typing import Any
 import logging
 
 
@@ -6,12 +7,12 @@ class Logger:
     """ Logger class. """
 
     @staticmethod
-    def get_logger():
+    def get_logger() -> Any:
         """ Get logger. """
         return logging
 
     @staticmethod
-    def init_logger(log_level):
+    def init_logger(log_level: str) -> None:
         """ Configures the logger. """
         logging_levels = {
             "critical": logging.CRITICAL,

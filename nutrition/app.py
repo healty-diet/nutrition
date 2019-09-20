@@ -1,6 +1,6 @@
 """ Main application. """
 
-from typing import Dict
+from typing import Dict, List
 import sys
 from PySide2.QtWidgets import QApplication, QWidget, QTabWidget
 
@@ -15,7 +15,7 @@ from .logger import Logger
 class NutritionApp(QWidget):
     """ Nutrition application. """
 
-    def __init__(self, calories_data: Dict[str, Dict[str, float]]):
+    def __init__(self, calories_data: Dict[str, Dict[str, float]]) -> None:
         super().__init__()
 
         # Main app settings
@@ -29,10 +29,10 @@ class NutritionApp(QWidget):
         # Init ui
         self._init_ui()
 
-    def _ui_geometry(self):
+    def _ui_geometry(self) -> List[int]:
         return [self._geometry["left"], self._geometry["top"], self._geometry["width"], self._geometry["height"]]
 
-    def _init_ui(self):
+    def _init_ui(self) -> None:
         """ Method to init UI. """
         self.setWindowTitle(self._title)
         self.setGeometry(*self._ui_geometry())
@@ -41,7 +41,8 @@ class NutritionApp(QWidget):
         recipe_library_widget = RecipeLibraryWidget()
         recipe_planner_widget = RecipePlannerWidget()
 
-        self._tab_widget = QTabWidget(self)
+        self._tab_widget = QTabWidget()
+        assert self._tab_widget is not None
         self._tab_widget.addTab(recipe_builder_widget, "Добавление рецептов")
         self._tab_widget.addTab(recipe_library_widget, "База рецептов")
         self._tab_widget.addTab(recipe_planner_widget, "Создание меню")
@@ -49,7 +50,7 @@ class NutritionApp(QWidget):
         self.show()
 
 
-def run_app(config_path: str):
+def run_app(config_path: str) -> None:
     """ Main application runner. """
     config = Configuration(config_path)
 

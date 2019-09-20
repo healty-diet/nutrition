@@ -4,7 +4,7 @@ import argparse
 from nutrition.app import run_app
 
 
-def run():
+def run() -> None:
     """ Runs the application. """
     parser = argparse.ArgumentParser(description="Run the nutrition app.")
     # TODO better default handling
@@ -15,4 +15,5 @@ def run():
     run_app(args.config)
 
 
-run()
+if __name__ == "__main__":
+    run()

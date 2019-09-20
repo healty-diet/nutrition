@@ -11,12 +11,12 @@ from nutrition.recipe.types import MeasureName
 class RecipeContentWidget(QPlainTextEdit):
     """ Recipe content widget. """
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.setReadOnly(True)
 
-    def set_recipe(self, recipe: Recipe):
+    def set_recipe(self, recipe: Recipe) -> None:
         """ Sets the provided recipe to the TextEdit. """
         recipe_text = ""
 

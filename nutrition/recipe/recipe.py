@@ -16,7 +16,7 @@ class Recipe:
         self.text = ""
         self.energy_value_per_serving = EnergyValue()
 
-    def set_data(self, serves: int, ingredients: List[Ingredient], text: str, enery_value: EnergyValue):
+    def set_data(self, serves: int, ingredients: List[Ingredient], text: str, enery_value: EnergyValue) -> None:
         """ Sets the recipe data. """
         self.serves_amount = serves
         self.ingredients = ingredients

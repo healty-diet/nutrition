@@ -1,6 +1,6 @@
 """ Recipe builder. """
 
-from typing import Optional, List
+from typing import Optional, List, Any, Callable, Tuple
 from functools import wraps
 
 from nutrition.recipe.types import RecipeName, Ingredient
@@ -8,11 +8,11 @@ from nutrition.recipe import Recipe
 from nutrition.recipe.energy_value import EnergyValue
 
 
-def _affects_recipe(method):
+def _affects_recipe(method: Callable[..., Any]) -> Callable[..., Any]:
     """ Methods marked with this decorator will recalculate the recipe after the method call. """
 
     @wraps(method)
-    def wrapper(self: "RecipeBuilder", *args):
+    def wrapper(self: "RecipeBuilder", *args: Any) -> Any:
         result = method(self, *args)
         self.recalculate()
         return result
@@ -23,37 +23,37 @@ def _affects_recipe(method):
 class RecipeBuilder:
     """ Class that builds recipe. """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._recipe_name: Optional[RecipeName] = None
-        self._ingredients: List[(Ingredient, EnergyValue)] = []
+        self._ingredients: List[Tuple[Ingredient, EnergyValue]] = []
         self._text: Optional[str] = None
         self._energy_value_per_serving: EnergyValue = EnergyValue()
         self._serves = 1
 
-    def energy_value(self):
+    def energy_value(self) -> EnergyValue:
         """ Getter for the recipe energy value. """
         return self._energy_value_per_serving
 
-    def set_recipe_name(self, recipe_name: RecipeName):
+    def set_recipe_name(self, recipe_name: RecipeName) -> None:
         """ Sets recipe name. """
         self._recipe_name = recipe_name
 
-    def set_recipe_text(self, recipe_text: str):
+    def set_recipe_text(self, recipe_text: str) -> None:
         """ Sets the recipe text. """
         self._text = recipe_text
 
     @_affects_recipe
-    def set_serves(self, serves: int):
+    def set_serves(self, serves: int) -> None:
         """ Sets the amount of service in the recipe. """
         self._serves = serves
 
     @_affects_recipe
-    def add_ingredient(self, ingredient: Ingredient, energy_value: EnergyValue):
+    def add_ingredient(self, ingredient: Ingredient, energy_value: EnergyValue) -> None:
         """ Adds an ingredient to the recipe. """
         self._ingredients.append((ingredient, energy_value))
 
     @_affects_recipe
-    def remove_ingredient(self, ingredient: Ingredient):
+    def remove_ingredient(self, ingredient: Ingredient) -> None:
         """ Removes an ingredient from the recipe. """
         raise NotImplementedError
 
@@ -68,7 +68,7 @@ class RecipeBuilder:
 
         return recipe
 
-    def recalculate(self):
+    def recalculate(self) -> None:
         """ Recalculates the recipe values. """
         self._energy_value_per_serving = EnergyValue()
 

@@ -1,8 +1,10 @@
 """ Utils for the recipe module. """
+from typing import List
+
 from nutrition.recipe.energy_value import EnergyValue
 
 
-def scale(energy_value: EnergyValue, scale_factor: float):
+def scale(energy_value: EnergyValue, scale_factor: float) -> EnergyValue:
     """ Scales energy values for a given mass. """
     modifier = float(scale_factor) / 100.0
     modified_energy_value = EnergyValue()
@@ -11,12 +13,12 @@ def scale(energy_value: EnergyValue, scale_factor: float):
     return modified_energy_value
 
 
-def _energy_data_dict_to_list(product_data):
+def _energy_data_dict_to_list(product_data: EnergyValue) -> List[float]:
     """ Makes dict with energy data a list. """
     return [product_data["calories"], product_data["protein"], product_data["fat"], product_data["carbohydrates"]]
 
 
-def energy_data_str(energy_data: EnergyValue, product_mass=100, needs_scaling=False):
+def energy_data_str(energy_data: EnergyValue, product_mass: int = 100, needs_scaling: bool = False) -> str:
     """ Takes energy data, scales it and returns as a string. """
     if needs_scaling:
         energy_data = scale(energy_data, scale_factor=product_mass)
