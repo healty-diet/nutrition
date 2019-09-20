@@ -1,5 +1,5 @@
 """ Configuration file management. """
-from typing import Optional
+from typing import Optional, Dict
 import json
 import os
 
@@ -13,12 +13,12 @@ class Configuration:
     RECIPES_FOLDER = "recipes"
 
     @staticmethod
-    def _lookup_config_file():
+    def _lookup_config_file() -> str:
         # TODO make an actual lookup
         # TODO use proper os-independent naming
         return ".nutrition_config"
 
-    def __init__(self, path: Optional[str]):
+    def __init__(self, path: Optional[str]) -> None:
         """
         Configuration class constructior.
 
@@ -43,19 +43,19 @@ class Configuration:
         if not os.path.exists(recipes_folder):
             os.makedirs(recipes_folder)
 
-    def calories_data_file(self):
+    def calories_data_file(self) -> str:
         """ Returns the path to the calories data file. """
         return os.path.join(self._application_folder, self.CALORIES_FILE)
 
-    def calories_data(self):
+    def calories_data(self) -> Dict[str, Dict[str, float]]:
         """ Loads and returns the calories data. """
         with open(self.calories_data_file()) as file:
             return json.load(file)
 
-    def recipes_folder(self):
+    def recipes_folder(self) -> str:
         """ Returns the path to the recipes folder. """
         return os.path.join(self._application_folder, self.RECIPES_FOLDER)
 
-    def logging_level(self):
+    def logging_level(self) -> str:
         """ Returns the logging level. """
         return self._log_level

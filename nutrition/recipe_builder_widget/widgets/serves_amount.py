@@ -1,15 +1,19 @@
 """ Serves amount widget. """
+from typing import Callable
+
 from PySide2.QtCore import Slot
 from PySide2.QtWidgets import QLineEdit
 from PySide2.QtGui import QIntValidator
 
 from nutrition.utils import WidgetWithLabel
 
+CallbackType = Callable[[int], None]
+
 
 class ServesAmountWidget(WidgetWithLabel):
     """ Widget that holds amount of serves. """
 
-    def __init__(self, on_serves_entered):
+    def __init__(self, on_serves_entered: CallbackType) -> None:
         self._on_serves_entered = on_serves_entered
 
         serves_amount_line_edit = QLineEdit("1")
@@ -25,7 +29,7 @@ class ServesAmountWidget(WidgetWithLabel):
         """ Returns the amount of serves entered in the line edit. """
         return int(self.widget.text())
 
-    def _connect_slots(self):
+    def _connect_slots(self) -> None:
         """ Connects slots associated with serves amount. """
         # Lint is disabled because pylint doesn't see .connect method
         # pylint: disable=no-member
@@ -34,5 +38,5 @@ class ServesAmountWidget(WidgetWithLabel):
         self.widget.editingFinished.connect(self._serves_amount_was_entered)
 
     @Slot()
-    def _serves_amount_was_entered(self):
+    def _serves_amount_was_entered(self) -> None:
         self._on_serves_entered(self.serves())

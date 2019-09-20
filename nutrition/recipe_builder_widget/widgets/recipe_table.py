@@ -1,13 +1,13 @@
 """ Module with the Recipe Table Widget. """
 
-from typing import List
+from typing import List, Any
 from enum import Enum
 from PySide2.QtWidgets import QTableWidget, QTableWidgetItem
 
 from nutrition.recipe.energy_value import EnergyValue
 
 
-def _table_item(value):
+def _table_item(value: Any) -> QTableWidgetItem:
     """ Returns QTableWidgetItem with the string as value. """
 
     return QTableWidgetItem(str(value))
@@ -49,7 +49,7 @@ class RecipeTableWidget(QTableWidget):
             """ Returns indices for product data fields. """
             return [cls(idx) for idx in range(cls.MASS.value, cls.CARBOHYDRATES.value + 1)]
 
-    def __init__(self):
+    def __init__(self) -> None:
         columns = [el.translated_str() for el in self.TableColumns]
 
         super().__init__(0, len(columns))
@@ -58,7 +58,7 @@ class RecipeTableWidget(QTableWidget):
         self.horizontalHeader().setDefaultSectionSize(50)
         self.setColumnWidth(self.TableColumns.INGREDIENT_NAME.value, 350)
 
-    def add_ingredient(self, ingredient_name: str, energy_value: EnergyValue, ingredient_mass: int):
+    def add_ingredient(self, ingredient_name: str, energy_value: EnergyValue, ingredient_mass: int) -> None:
         """ Adds a new row into recipe table with provided ingredient. """
 
         row_count = self.rowCount()

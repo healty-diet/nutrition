@@ -16,12 +16,29 @@ class Recipe:
         self.text = ""
         self.energy_value_per_serving = EnergyValue()
 
-    def set_data(self, serves: int, ingredients: List[Ingredient], text: str, enery_value: EnergyValue):
+    def set_data(self, serves: int, ingredients: List[Ingredient], text: str, enery_value: EnergyValue) -> None:
         """ Sets the recipe data. """
         self.serves_amount = serves
         self.ingredients = ingredients
         self.text = text
         self.energy_value_per_serving = enery_value
+
+    def ingredients_per_serving(self) -> List[Ingredient]:
+        """ Returns the list of ingredients for one serving. """
+        ingredients: List[Ingredient] = []
+
+        for ingredient in self.ingredients:
+            ingredient_scaled = ingredient
+
+            name = list(ingredient_scaled.keys())[0]
+
+            measure = list(ingredient_scaled[name].keys())[0]
+
+            ingredient_scaled[name][measure] /= self.serves_amount
+
+            ingredients.append(ingredient_scaled)
+
+        return ingredients
 
     def as_json(self) -> str:
         """ Represents the recipe as json. """

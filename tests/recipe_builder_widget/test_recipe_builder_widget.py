@@ -1,6 +1,7 @@
 """ Tests for the recipe builder widget. """
 from unittest.mock import patch
 
+from nutrition.utils import SaveButtonWidget
 from nutrition.recipe_builder_widget import RecipeBuilderWidget
 from nutrition.recipe_builder_widget.widgets.recipe_name import RecipeNameWidget
 from nutrition.recipe_builder_widget.widgets.serves_amount import ServesAmountWidget
@@ -8,7 +9,6 @@ from nutrition.recipe_builder_widget.widgets.ingredient import IngredientWidget
 from nutrition.recipe_builder_widget.widgets.energy_value import EnergyValueWidget
 from nutrition.recipe_builder_widget.widgets.recipe_table import RecipeTableWidget
 from nutrition.recipe_builder_widget.widgets.recipe_text import RecipeTextWidget
-from nutrition.recipe_builder_widget.widgets.save_recipe import SaveRecipeWidget
 from nutrition.recipe_builder_widget.widgets.total_energy_value import TotalEnergyValueWidget
 from nutrition.recipe_builder_widget.widgets.utils import energy_data_str
 
@@ -43,7 +43,7 @@ class TestRecipeBuilderWidget(UsesQApplication):
             RecipeTableWidget,
             TotalEnergyValueWidget,
             RecipeTextWidget,
-            SaveRecipeWidget,
+            SaveButtonWidget,
         ]
 
         for expected_type in expected_children:
