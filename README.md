@@ -9,20 +9,80 @@ This is a native application based on Pyside2/Qt to build your diet plan for a w
 
 Key features:
 
-[x] Creating recipes with calculated energy value.
+- Creating recipes with calculated energy value.
+- Managing recipes library
+- Creating a menu from recipes with respect to serves amount
+- Managing menu energy value
+- Creating a shopping list based on menu
+- Export of menu and shopping list into `.xls` format.
 
-[ ] Managing recipes library
+![screenshot][screenshot.png]
 
-[ ] Creating a menu from recipes with respect to serves amount
+## Language support
 
-[ ] Managing menu energy value
+Currently only Russian language is supported, but English language support can easily be added upon request.
 
-[ ] Creating a shopping list based on menu
+## Install and run
 
-## Work in progress
+To install, simply run:
 
-This is a work in progress project. Many features are not implemented yet.
-Description will be updated as features are implemented.
+```sh
+pip install -e nutrition
+```
+
+To run, you have to create a folder for application data.
+Then, you need to create a config file (e.g. ".nutrition_config") with the following structure:
+
+```json
+{
+  "application_folder": "/home/user/nutrition_data",
+}
+```
+
+The folder with application data expects to have a `calories.json` file (which can be obtained via [Calorizator parser](https://github.com/healty-diet/calorizator_parser) script) and `recipes` folder with recipes in `json` format (which can be obtained via [Eda.ru parser](https://github.com/healty-diet/eda_ru_parser)).
+
+Otherwise you can provide the data manually.
+
+Expected file format for `calories.json`:
+
+```python
+{
+    "name1": {"protein": 0.0, "fat": 0.0, "carbohydrates": 0.0, "calories": 0.0},
+    "name2": {"protein": 0.0, "fat": 0.0, "carbohydrates": 0.0, "calories": 0.0},
+    ...
+}
+```
+
+Expected file names for `recipes` folder are `0.json`, `1.json`, etc. The folder may be empty, if you're going to create every recipe manually.
+
+Expceted file format for `{N}.json`:
+
+```python
+{
+  "name": "recipe_name",
+  "serves_amount": 1,
+  "ingredients": [
+    {
+      "ingredient_1": {
+        "measure_name (e.g. gr.)": 2.0
+      }
+    },
+  ],
+  "text": "1. Step 1\n2. Step 2\n3. Step 3\n",
+  "energy_value_per_serving": {
+    "calories": "0",
+    "protein": "0",
+    "fat": "0",
+    "carbohydrates": "0"
+  }
+}
+```
+
+After that you can run the application as following:
+
+```sh
+python -m nutrition --config=/path/to/.nutrition_config
+```
 
 ## LICENSE
 

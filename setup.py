@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from distutils.core import setup
 
-INSTALL_REQUIRES = ["pyside2"]
+INSTALL_REQUIRES = ["pyside2", "xlwt"]
 
 PYTHON_REQUIRES = ">=3.5"
 
