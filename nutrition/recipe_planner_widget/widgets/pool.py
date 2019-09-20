@@ -1,6 +1,6 @@
 """ Pool widget. """
 
-from typing import Dict, List, Tuple, Callable
+from typing import Dict, List, Tuple, Callable, Optional
 from enum import Enum
 
 from PySide2.QtWidgets import QWidget, QLabel, QGridLayout, QHBoxLayout, QPushButton, QComboBox
@@ -15,14 +15,7 @@ RemovedCallbackType = Callable[[str], None]
 class PoolElementEditorWidget(QWidget):
     """ Class which handles pool elements planning. """
 
-    def __init__(
-        self,
-        meal_name: str,
-        week_days: List[str],
-        meals_amount: int,
-        on_meal_planned: PlannedCallbackType,
-        on_element_removed: RemovedCallbackType,
-    ) -> None:
+    def __init__(self, meal_name: str, week_days: List[str], meals_amount: int) -> None:
         super().__init__()
 
         week_day_list_widget = QComboBox()
@@ -48,15 +41,19 @@ class PoolElementEditorWidget(QWidget):
         # Init self data
 
         self._meal_name = meal_name
-        self._on_meal_planned = on_meal_planned
-        self._on_element_removed = on_element_removed
+        self._on_meal_planned: Optional[PlannedCallbackType] = None
+        self._on_element_removed: Optional[RemovedCallbackType] = None
 
         self._week_day_list_widget = week_day_list_widget
         self._meal_idx_list_widget = meal_idx_list_widget
         self._add_push_button = add_push_button
         self._remove_push_button = remove_push_button
 
-        # Connect slots
+    def set_callbacks(self, on_meal_planned: PlannedCallbackType, on_element_removed: RemovedCallbackType) -> None:
+        """ Sets callbacks for widget. """
+        self._on_meal_planned = on_meal_planned
+        self._on_element_removed = on_element_removed
+
         self._connect_slots()
 
     def _connect_slots(self) -> None:
@@ -67,12 +64,16 @@ class PoolElementEditorWidget(QWidget):
 
     @Slot()
     def _add_meal(self, _checked: bool) -> None:
+        if self._on_meal_planned is None:
+            return
         week_day = self._week_day_list_widget.currentText()
         meal_idx = int(self._meal_idx_list_widget.currentText())
         self._on_meal_planned(self._meal_name, week_day, meal_idx)
 
     @Slot()
     def _remove_meal(self, _checked: bool) -> None:
+        if self._on_element_removed is None:
+            return
         self._on_element_removed(self._meal_name)
 
 
@@ -120,9 +121,8 @@ class PoolWidget(QWidget):
 
         recipe_label_widget = QLabel(meal_name)
         serves_amount_widget = QLabel(str(serves_amount))
-        editor_widget = PoolElementEditorWidget(
-            meal_name, self._week_days, self._meals_amount, self._meal_planned, self._meal_removed
-        )
+        editor_widget = PoolElementEditorWidget(meal_name, self._week_days, self._meals_amount)
+        editor_widget.set_callbacks(self._meal_planned, self._meal_removed)
 
         self.layout().addWidget(recipe_label_widget, row_idx, self._Columns.RECIPE.value)
         self.layout().addWidget(serves_amount_widget, row_idx, self._Columns.SERVES.value)

@@ -7,6 +7,7 @@ from PySide2.QtWidgets import QWidget, QVBoxLayout
 from nutrition.logger import Logger
 from nutrition.recipe.types import RecipeName, ingredient as build_ingredient
 from nutrition.recipe import RecipeManager
+from nutrition.utils import SaveButtonWidget
 
 from .widgets.recipe_name import RecipeNameWidget
 from .widgets.serves_amount import ServesAmountWidget
@@ -14,12 +15,11 @@ from .widgets.ingredient import IngredientWidget
 from .widgets.energy_value import EnergyValueWidget
 from .widgets.recipe_table import RecipeTableWidget
 from .widgets.recipe_text import RecipeTextWidget
-from .widgets.save_recipe import SaveRecipeWidget
 from .widgets.total_energy_value import TotalEnergyValueWidget
 from .widgets.utils import scale
 from .recipe_builder import RecipeBuilder
 
-
+# pylint: disable=too-many-instance-attributes
 class RecipeBuilderWidget(QWidget):
     """ Recipe widget. """
 
@@ -35,7 +35,7 @@ class RecipeBuilderWidget(QWidget):
         recipe_table_widget = RecipeTableWidget()
         total_energy_value_widget = TotalEnergyValueWidget()
         recipe_text_widget = RecipeTextWidget()
-        save_recipe_widget = SaveRecipeWidget(self._on_save_button_clicked)
+        save_recipe_widget = SaveButtonWidget("Сохранить рецепт", self._on_save_button_clicked)
 
         # Layout for the whole block
         full_layout = QVBoxLayout()

@@ -6,12 +6,12 @@ import xlwt
 
 from nutrition.logger import Logger
 from nutrition.recipe import RecipeManager
+from nutrition.utils import SaveButtonWidget
 
 from .widgets.pool_item import PoolItemWidget
 from .widgets.pool import PoolWidget
 from .widgets.plan import PlanWidget
 from .widgets.shopping_list import ShoppingListWidget
-from .widgets.save_plan import SavePlanWidget
 
 
 class RecipePlannerWidget(QWidget):
@@ -30,7 +30,7 @@ class RecipePlannerWidget(QWidget):
         pool_widget = PoolWidget(week_days, meals_amount, self._on_meal_planned)
         plan_widget = PlanWidget(week_days, meals_amount)
         shopping_list_widget = ShoppingListWidget()
-        save_plan_widget = SavePlanWidget(self._on_save)
+        save_plan_widget = SaveButtonWidget("Сохранить меню", self._on_save)
 
         # Layout for the whole block.
         full_layout = QVBoxLayout()

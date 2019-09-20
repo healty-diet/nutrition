@@ -1,8 +1,11 @@
 """ Useful helpers for the app. """
 
-from typing import Type, Optional
+from typing import Type, Optional, Callable
 from enum import Enum
-from PySide2.QtWidgets import QWidget, QLabel, QBoxLayout, QLayout
+from PySide2.QtWidgets import QWidget, QLabel, QVBoxLayout, QBoxLayout, QLayout, QPushButton
+from PySide2.QtCore import Slot
+
+CallbackType = Callable[[], None]
 
 
 class WidgetWithLabel(QWidget):
@@ -48,3 +51,36 @@ class InfoWithLabel(WidgetWithLabel):
     def set_text(self, text: str) -> None:
         """ Sets the text of the stored label. """
         self.widget.setText(text)
+
+
+class SaveButtonWidget(QWidget):
+    """
+    Widget with the save button.
+    """
+
+    def __init__(self, title: str, on_clicked: CallbackType) -> None:
+        self._on_clicked = on_clicked
+
+        super().__init__()
+
+        save_button = QPushButton(title)
+
+        # Layout for the save block
+
+        save_layout = QVBoxLayout()
+        save_layout.addWidget(save_button)
+        save_layout.addStretch()
+
+        self.setLayout(save_layout)
+
+        self._save_button = save_button
+        self._connect_slots()
+
+    def _connect_slots(self) -> None:
+        # Lint is disabled because pylint doesn't see .connect method
+        # pylint: disable=no-member
+        self._save_button.clicked.connect(self._save_button_clicked)
+
+    @Slot()
+    def _save_button_clicked(self, _checked: bool) -> None:
+        self._on_clicked()
